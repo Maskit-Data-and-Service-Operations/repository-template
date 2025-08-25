@@ -1,0 +1,92 @@
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened]
+    # Optional: Only run on specific file changes
+    # paths:
+    #   - "src/**/*.ts"
+    #   - "src/**/*.js"
+    #   - "prisma/**"
+    #   - "drizzle/**"
+
+jobs:
+  claude-review:
+    # Optional: Filter by PR author
+    # if: |
+    #   github.event.pull_request.user.login == 'external-contributor' ||
+    #   github.event.pull_request.user.login == 'new-developer' ||
+    #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude Code Review
+        id: claude-review
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+
+          # Optional: Specify model (defaults to Claude Sonnet 4, uncomment for Claude Opus 4)
+          # model: "claude-opus-4-20250514"
+
+          # Custom instructions for review behavior
+          custom_instructions: |
+            이 프로젝트는 Node.js, Express, TypeScript를 사용하는 백엔드 API 서버입니다.
+            코드 리뷰 시 다음 사항을 준수해주세요:
+            - 모든 피드백은 한국어로 작성
+            - 건설적이고 친절한 톤 유지
+            - 구체적인 개선 예시 제공
+            - RESTful API 설계 원칙 준수 확인
+            - TypeScript 타입 안전성 검증
+            - 데이터베이스 쿼리 최적화 확인
+            - 에러 핸들링 적절성 검토
+            - 보안 모범 사례 준수 확인
+
+          # Direct prompt for automated review (no @claude mention needed)
+          direct_prompt: |
+            이 Pull Request를 검토하고 다음 항목에 대한 피드백을 제공해주세요:
+            - 코드 품질 및 모범 사례 준수
+            - 잠재적인 버그나 문제점
+            - 성능 고려사항 (쿼리 최적화, N+1 문제 등)
+            - 보안 취약점 (SQL 인젝션, XSS, 인증/인가 등)
+            - API 설계 일관성
+            - 에러 처리 및 로깅
+            - 테스트 커버리지
+            - TypeScript 타입 정의의 적절성
+            - 데이터베이스 트랜잭션 처리
+
+            모든 피드백은 건설적이고 도움이 되도록 작성해주세요.
+
+          # Optional: Customize review based on file types
+          # direct_prompt: |
+          #   Review this PR focusing on:
+          #   - For Controller files: API design, input validation, and response format
+          #   - For Service files: Business logic, error handling, and data processing
+          #   - For Repository files: Query optimization, transaction handling
+          #   - For DTO files: Validation rules and type definitions
+          #   - For tests: Coverage, edge cases, and test quality
+
+          # Optional: Different prompts for different authors
+          # direct_prompt: |
+          #   ${{ github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR' &&
+          #   'Welcome! Please review this PR from a first-time contributor. Be encouraging and provide detailed explanations for any suggestions.' ||
+          #   'Please provide a thorough code review focusing on our coding standards and best practices.' }}
+
+          # Optional: Add specific tools for running tests or linting
+          # allowed_tools: "Bash(npm run test),Bash(npm run lint),Bash(npm run build)"
+
+          # Optional: Skip review for certain conditions
+          # if: |
+          #   !contains(github.event.pull_request.title, '[skip-review]') &&
+          #   !contains(github.event.pull_request.title, '[WIP]')

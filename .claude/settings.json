@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__task-master-ai",
+      "Bash(mkdir:*)",
+      "Bash(tree:*)",
+      "Bash(grep:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm typecheck:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm prettier:check:*)",
+      "Bash(pnpm format:*)",
+      "Bash(git commit:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm build:*)",
+      "Bash(sed:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": ["task-master-ai"]
+}
