@@ -3,4 +3,10 @@ packages:
   - packages/*
 
 onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - '@swc/core'
+  - esbuild
   - nx
+  - sharp
+  - unrs-resolver
+  - core-js-pure
