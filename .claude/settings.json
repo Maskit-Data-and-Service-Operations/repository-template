@@ -18,6 +18,5 @@
       "Bash(sed:*)"
     ]
   },
-  "enableAllProjectMcpServers": true,
-  "enabledMcpjsonServers": ["task-master-ai"]
+  "enableAllProjectMcpServers": true
 }

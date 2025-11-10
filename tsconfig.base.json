@@ -1,26 +1,21 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "composite": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
     "importHelpers": true,
-    "target": "ES2022",
+    "isolatedModules": true,
+    "lib": ["es2022"],
     "module": "esnext",
-    "lib": ["ES2022", "dom"],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "strict": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
+    "moduleResolution": "bundler",
+    "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
-    "resolveJsonModule": true,
-    "baseUrl": "."
-  },
-  "exclude": ["node_modules", "tmp"]
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es2022",
+    "customConditions": ["@org/source"]
+  }
 }
